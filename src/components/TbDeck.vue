@@ -1,9 +1,13 @@
 <template>
   <div class="TbDeck">
     <div class="TbCards">
-      <TbCard v-for="(card,index) in cards" :key="index" cardType="grey" />
+      <TbCard
+        v-for="(card, index) in cards"
+        :key="index"
+        :cardType="card.type"
+      />
     </div>
-    <TbPlayer playerName="Jack-I-Chan" />
+    <TbPlayer :playerName="playerName" />
   </div>
 </template>
 
@@ -23,6 +27,10 @@ export default {
       validator: function(value) {
         return value.length < 6 && value.length > 1;
       },
+      required: true
+    },
+    playerName: {
+      type: String,
       required: true
     }
   }

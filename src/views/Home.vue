@@ -1,6 +1,11 @@
 <template>
   <div class="home">
-    <TbDeck v-for="player in players" :key="player.id" :cards="player.deck" />
+    <TbDeck
+      v-for="player in players"
+      :key="player.id"
+      :cards="player.deck"
+      :playerName="player.id"
+    />
   </div>
 </template>
 

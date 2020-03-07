@@ -8,6 +8,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  created() {
+    this.$store.dispatch("toto");
+  }
+};
+</script>
+
 <style lang="scss">
 html,
 body,

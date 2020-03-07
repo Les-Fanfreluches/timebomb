@@ -1,28 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { db } from "@/services/firestore.js";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    player: "pierre",
     game: {
-      players: [{ id: "pierre" }, { id: "micka" }],
-      decks: {
-        pierre: [
-          { type: "grey" },
-          { type: "bomb" },
-          { type: "bigben" },
-          { type: null },
-          { type: null }
-        ],
-        micka: [
-          { type: "grey" },
-          { type: "bomb" },
-          { type: "bigben" },
-          { type: null },
-          { type: null }
-        ]
-      }
+      currentPlayer: "",
+      players: [],
+      decks: {}
     }
   },
   getters: {
@@ -32,7 +21,21 @@ export default new Vuex.Store({
       });
     }
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    setGame(state, payload) {
+      state.game = payload.game;
+    }
+  },
+  actions: {
+    toto(context) {
+      db.collection("game")
+        .doc("HoH38Plz7Hp6e4QSLfRv")
+        .onSnapshot(function(doc) {
+          const game = doc.data();
+          context.commit("setGame", { game });
+          console.log("Current data: ", game);
+        });
+    }
+  },
   modules: {}
 });
