@@ -33,7 +33,7 @@ export default new Vuex.Store({
         .onSnapshot(function(doc) {
           const game = doc.data();
           context.commit("setGame", { game });
-          console.log("Current data: ", game);
+          // console.log("Current data: ", game);
         });
     }
   },
