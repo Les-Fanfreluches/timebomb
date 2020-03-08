@@ -1,28 +1,25 @@
 <template>
-  <div class="home">
-    <TbDeck
-      v-for="player in players"
-      :key="player.id"
-      :cards="player.deck"
-      :playerName="player.id"
-    />
+  <div class="button-container">
+    <button type="button" @click="createGame">Nouvelle Partie !</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
-import TbDeck from "@/components/TbDeck.vue";
+import { db } from "@/services/firestore.js";
 
 export default {
-  name: "Home",
-  components: {
-    TbDeck
-  },
-  computed: {
-    players() {
-      return this.$store.getters.playerDecks;
+  methods: {
+    createGame() {
+      //créer la game.
+      db.collection("game").add({
+        started: false,
+        playerList: []
+      });
+      //aller sur la game.
     }
   }
 };
 </script>
+
+<style>
+</style>

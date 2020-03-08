@@ -1,17 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div class="TbPlayer">{{playerName}}</div>
 </template>

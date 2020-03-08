@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    currentGameId: "",
     player: "pierre",
     game: {
       currentPlayer: "",
@@ -24,12 +25,15 @@ export default new Vuex.Store({
   mutations: {
     setGame(state, payload) {
       state.game = payload.game;
+    },
+    setCurrentGameId(state, payload) {
+      state.currentGameId = payload.gameId;
     }
   },
   actions: {
-    toto(context) {
+    subscribeToGame(context) {
       db.collection("game")
-        .doc("HoH38Plz7Hp6e4QSLfRv")
+        .doc(context.state.currentGameId)
         .onSnapshot(function(doc) {
           const game = doc.data();
           context.commit("setGame", { game });
