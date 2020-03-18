@@ -9,12 +9,7 @@ export default new Vuex.Store({
   state: {
     currentGameId: "",
     playerId: "",
-    player: "pierre",
-    game: {
-      currentPlayer: "",
-      players: [],
-      decks: {}
-    }
+    game: {}
   },
   getters: {
     playerDecks(state) {

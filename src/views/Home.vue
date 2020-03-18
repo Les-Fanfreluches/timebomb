@@ -13,7 +13,7 @@ export default {
       //créer la game.
       db.collection("game")
         .add({
-          started: false,
+          isStarted: false,
           playerList: []
         })
         .then(docRef => {
