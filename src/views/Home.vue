@@ -11,10 +11,14 @@ export default {
   methods: {
     createGame() {
       //créer la game.
-      db.collection("game").add({
-        started: false,
-        playerList: []
-      });
+      db.collection("game")
+        .add({
+          started: false,
+          playerList: []
+        })
+        .then(docRef => {
+          this.$router.push({ path: `/game/${docRef.id}` });
+        });
       //aller sur la game.
     }
   }

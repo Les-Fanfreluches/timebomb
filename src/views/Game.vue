@@ -1,17 +1,18 @@
 <template>
   <div>
-    <div v-if="!isStarted">...</div>
+    <StartGame v-if="!isStarted" />
     <TbBoard v-else />
   </div>
 </template>
 
 <script>
 import TbBoard from "@/components/TbBoard.vue";
-
+import StartGame from "@/components/StartGame.vue";
 export default {
   name: "Game",
   components: {
-    TbBoard
+    TbBoard,
+    StartGame
   },
   computed: {
     isStarted() {
