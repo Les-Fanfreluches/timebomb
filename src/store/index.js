@@ -24,6 +24,9 @@ export default new Vuex.Store({
     },
     setCurrentGameId(state, payload) {
       state.currentGameId = payload.gameId;
+    },
+    setPlayerId(state, payload) {
+      state.playerId = payload.playerId;
     }
   },
   actions: {
@@ -39,3 +42,27 @@ export default new Vuex.Store({
   },
   modules: {}
 });
+
+/* const test = {
+  currentGameId: "gameid",
+  playerId: "monPlayerId",
+  //synched to firebase
+  game: {
+    turn: 1,
+    playerList: [
+      { id: "toto1", name: "toto1" },
+      { id: "toto2", name: "toto2" }
+    ],
+    decks: {
+      toto1: [{ type: "bigben", turned: "false" }],
+      toto2: [
+        { type: "grey", turned: "false" },
+        { type: "bomb", turned: "true" }
+      ]
+    },
+    tracker: {
+      grey: 5,
+      bomb: 1
+    }
+  }
+}; */

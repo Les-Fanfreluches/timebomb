@@ -1,5 +1,6 @@
 <template>
   <div class="button-container">
+    <span>Le TimeBomB Des Copains !</span>
     <button type="button" @click="createGame">Nouvelle Partie !</button>
   </div>
 </template>
@@ -26,4 +27,10 @@ export default {
 </script>
 
 <style>
+.button-container {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
 </style>
