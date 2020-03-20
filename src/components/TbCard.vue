@@ -2,7 +2,6 @@
   <FlipCard :flipped="!turned">
     <template slot="front">
       <div
-        @click="turned = false"
         class="card"
         :class="{
           'grey-card': cardType == 'grey',
@@ -12,7 +11,7 @@
       />
     </template>
     <template slot="back">
-      <div class="card brown-card" @click="turned = true" />
+      <div class="card brown-card" @click="turnCard" />
     </template>
   </FlipCard>
 </template>
@@ -26,17 +25,26 @@ export default {
     FlipCard
   },
   props: {
+    cardIndex: {
+      type: Number,
+      required: true
+    },
     cardType: {
       validator: function(value) {
         return ["grey", "bomb", "bigben"].includes(value);
       },
       required: true
+    },
+    turned: {
+      type: Boolean,
+      default: false,
+      required: true
     }
   },
-  data() {
-    return {
-      turned: false
-    };
+  methods: {
+    turnCard() {
+      this.$emit("turnCard", this.cardIndex);
+    }
   }
 };
 </script>

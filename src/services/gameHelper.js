@@ -40,4 +40,12 @@ function initGame(playerList) {
   };
 }
 
-export { initGame };
+function turnCardInDeck(deck, cardIndex) {
+  const oldCard = deck[cardIndex];
+  const turnedCard = { ...oldCard, turned: true };
+  const deckCopy = [...deck];
+  deckCopy.splice(cardIndex, 1, turnedCard);
+
+  return deckCopy;
+}
+export { initGame, turnCardInDeck };

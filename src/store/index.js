@@ -13,7 +13,7 @@ export default new Vuex.Store({
   },
   getters: {
     playerDecks(state) {
-      return state.game.players.map(player => {
+      return state.game.playerList.map(player => {
         return { ...player, deck: state.game.decks[player.id] };
       });
     }

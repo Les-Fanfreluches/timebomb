@@ -5,6 +5,9 @@
         v-for="(card, index) in cards"
         :key="index"
         :cardType="card.type"
+        :turned="card.turned"
+        @turnCard="turnCard"
+        :cardIndex="index"
       />
     </div>
     <TbPlayer :playerName="playerName" />
@@ -14,6 +17,8 @@
 <script>
 import TbCard from "@/components/TbCard.vue";
 import TbPlayer from "@/components/TbPlayer.vue";
+import { db } from "@/services/firestore.js";
+import { turnCardInDeck } from "@/services/gameHelper.js";
 
 export default {
   name: "TbDeck",
@@ -32,6 +37,26 @@ export default {
     playerName: {
       type: String,
       required: true
+    },
+    playerId: {
+      type: String,
+      required: true
+    }
+  },
+  methods: {
+    turnCard(cardIndex) {
+      const playerId = this.playerId;
+      const game = db.collection("game").doc(this.$store.state.currentGameId);
+
+      const newDeck = turnCardInDeck(
+        this.$store.state.game.decks[playerId],
+        cardIndex
+      );
+      const deckKey = `decks.${playerId}`;
+      console.log({ [deckKey]: newDeck });
+      game.update({
+        [deckKey]: newDeck
+      });
     }
   }
 };

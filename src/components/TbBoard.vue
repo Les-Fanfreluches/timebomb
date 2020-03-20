@@ -1,10 +1,14 @@
 <template>
-  <div>
+  <div class="board">
+    <router-link class="link" to="/">
+      <span>TimeBomB Des Copains</span>
+    </router-link>
     <TbDeck
       v-for="player in players"
       :key="player.id"
       :cards="player.deck"
-      :playerName="player.id"
+      :playerName="player.name"
+      :playerId="player.id"
     />
   </div>
 </template>
@@ -26,3 +30,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap");
+
+.board span {
+  background-color: rgb(34, 34, 34);
+  border: 5px solid #c0651b;
+  color: #c0651b;
+  display: flex;
+  font-family: "Spicy Rice", cursive;
+  font-size: 48px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.link {
+  text-decoration: none;
+}
+</style>

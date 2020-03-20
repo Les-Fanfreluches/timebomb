@@ -12,23 +12,17 @@
         maxlength="10"
         size="12"
       />
-      <button class="join" @click="updateGame" type="button">
-        Joindre La Game
-      </button>
+      <button class="join" @click="updateGame" type="button">Joindre La Game</button>
     </div>
     <ul>
-      <li v-for="player in $store.state.game.playerList" :key="player.id">
-        {{ player.name }}
-      </li>
+      <li v-for="player in $store.state.game.playerList" :key="player.id">{{ player.name }}</li>
     </ul>
     <button
       class="start"
       v-if="numberOfPlayers > 3 && numberOfPlayers < 9"
       @click="startGame()"
       type="button"
-    >
-      Start La Game!
-    </button>
+    >Start La Game!</button>
   </div>
 </template>
 
@@ -46,7 +40,7 @@ export default {
   computed: {
     IsplayerInTheGame() {
       const playerList = this.$store.state.game.playerList;
-      const playerId = this.$store.state.game.playerId;
+      const playerId = this.$store.state.playerId;
 
       if (!playerList) {
         return false;
