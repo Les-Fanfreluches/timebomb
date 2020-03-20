@@ -53,7 +53,6 @@ export default {
         cardIndex
       );
       const deckKey = `decks.${playerId}`;
-      console.log({ [deckKey]: newDeck });
       game.update({
         [deckKey]: newDeck
       });
