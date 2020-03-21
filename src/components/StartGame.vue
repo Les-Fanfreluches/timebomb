@@ -23,7 +23,7 @@
     </ul>
     <button
       class="start"
-      v-if="numberOfPlayers > 1 && numberOfPlayers < 9"
+      v-if="numberOfPlayers > 3 && numberOfPlayers < 9"
       @click="startGame"
       type="button"
     >
