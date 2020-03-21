@@ -3,14 +3,17 @@
     <div class="TbCards">
       <TbCard
         v-for="(card, index) in cards"
-        :key="index"
+        :key="`${$store.state.game.turn}-${index}`"
         :cardType="card.type"
-        :turned="card.turned"
+        :turned="card.turned || forceDisplay"
         @turnCard="turnCard"
         :cardIndex="index"
       />
     </div>
-    <TbPlayer :playerName="playerName" />
+    <TbPlayer
+      :playerName="playerName"
+      :isPlaying="this.$store.getters.isPlayerTurnToPlay(this.playerId)"
+    />
   </div>
 </template>
 
@@ -41,20 +44,51 @@ export default {
     playerId: {
       type: String,
       required: true
+    },
+    forceDisplay: {
+      type: Boolean
     }
   },
   methods: {
     turnCard(cardIndex) {
-      const playerId = this.playerId;
+      const currentPlayerId = this.$store.state.playerId;
+
+      if (this.$store.getters.isGameFinished) {
+        return;
+      }
+
+      if (!this.$store.getters.isPlayerTurnToPlay(currentPlayerId)) {
+        return;
+      }
+
+      if (this.$store.getters.shouldRedraw) {
+        return;
+      }
+
+      const deckPlayerId = this.playerId;
       const game = db.collection("game").doc(this.$store.state.currentGameId);
 
       const newDeck = turnCardInDeck(
-        this.$store.state.game.decks[playerId],
+        this.$store.state.game.decks[deckPlayerId],
         cardIndex
       );
-      const deckKey = `decks.${playerId}`;
+      const turnedCardColor = newDeck[cardIndex].type;
+      let greyTracker = this.$store.state.game.tracker.grey;
+      let bombTracker = this.$store.state.game.tracker.bomb;
+      let bigbenTracker = this.$store.state.game.tracker.bigben;
+
+      if (turnedCardColor === "grey") greyTracker++;
+      if (turnedCardColor === "bomb") bombTracker++;
+      if (turnedCardColor === "bigben") bigbenTracker++;
+
+      const deckKey = `decks.${deckPlayerId}`;
+
       game.update({
-        [deckKey]: newDeck
+        [deckKey]: newDeck,
+        currentPlayerId: deckPlayerId,
+        "tracker.grey": greyTracker,
+        "tracker.bomb": bombTracker,
+        "tracker.bigben": bigbenTracker
       });
     }
   }

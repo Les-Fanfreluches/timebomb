@@ -1,5 +1,7 @@
 <template>
-  <div class="TbPlayer">{{playerName}}</div>
+  <div class="TbPlayer" :class="{ currentPlayer: isPlaying }">
+    {{ playerName }}
+  </div>
 </template>
 
 <script>
@@ -9,6 +11,10 @@ export default {
     playerName: {
       type: String,
       required: true
+    },
+    isPlaying: {
+      type: Boolean,
+      required: true
     }
   }
 };
@@ -17,5 +23,9 @@ export default {
 <style>
 .TbPlayer {
   border: 2px solid black;
+}
+
+.currentPlayer {
+  background-color: white;
 }
 </style>

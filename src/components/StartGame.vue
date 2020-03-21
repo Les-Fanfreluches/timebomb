@@ -12,24 +12,30 @@
         maxlength="10"
         size="12"
       />
-      <button class="join" @click="updateGame" type="button">Joindre La Game</button>
+      <button class="join" @click="updateGame" type="button">
+        Joindre La Game
+      </button>
     </div>
     <ul>
-      <li v-for="player in $store.state.game.playerList" :key="player.id">{{ player.name }}</li>
+      <li v-for="player in $store.state.game.playerList" :key="player.id">
+        {{ player.name }}
+      </li>
     </ul>
     <button
       class="start"
-      v-if="numberOfPlayers > 3 && numberOfPlayers < 9"
-      @click="startGame()"
+      v-if="numberOfPlayers > 1 && numberOfPlayers < 9"
+      @click="startGame"
       type="button"
-    >Start La Game!</button>
+    >
+      Start La Game!
+    </button>
   </div>
 </template>
 
 <script>
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/services/firestore.js";
-import { initGame } from "@/services/gameHelper.js";
+import { drawGame, drawRoles } from "@/services/gameHelper.js";
 export default {
   name: "StartGame",
   data() {
@@ -63,8 +69,13 @@ export default {
     startGame() {
       const game = db.collection("game").doc(this.$store.state.currentGameId);
       const playerList = this.$store.state.game.playerList;
-      const myGame = initGame(playerList);
-      game.update(myGame);
+      const myGame = drawGame(playerList);
+      const playerListWithRoles = drawRoles(playerList);
+      game.update({
+        ...myGame,
+        currentPlayerId: playerList[0].id, //todo random mfck
+        playerList: playerListWithRoles
+      });
     },
     updateGame() {
       const myId = uuidv4();
