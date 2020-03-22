@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="game-container">
     <StartGame v-if="!isStarted" />
     <TbBoard v-else />
   </div>
@@ -29,3 +29,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.game-container {
+  height: 100%;
+  text-align: center;
+}
+</style>

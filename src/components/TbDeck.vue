@@ -11,6 +11,7 @@
       />
     </div>
     <TbPlayer
+      v-if="playerName"
       :playerName="playerName"
       :isPlaying="this.$store.getters.isPlayerTurnToPlay(this.playerId)"
     />
@@ -38,8 +39,7 @@ export default {
       required: true
     },
     playerName: {
-      type: String,
-      required: true
+      type: String
     },
     playerId: {
       type: String,
@@ -118,8 +118,6 @@ export default {
   min-height: 100px;
 }
 .TbDeck {
-  display: inline-block;
-  margin: 5px;
   text-align: center;
   width: 400px;
 }

@@ -1,28 +1,33 @@
 <template>
   <div class="startGame">
-    <div v-if="!IsplayerInTheGame">
-      <label for="pseudo">Pseudo :&nbsp;</label>
-      <input
-        v-model="playerName"
-        type="text"
-        id="pseudo"
-        name="pseudo"
-        required
-        minlength="1"
-        maxlength="10"
-        size="12"
-      />
-      <button class="join" @click="updateGame" type="button">Joindre La Game</button>
-    </div>
-    <ul>
-      <li v-for="player in $store.state.game.playerList" :key="player.id">{{ player.name }}</li>
-    </ul>
-    <button
-      class="start"
-      v-if="numberOfPlayers > 1 && numberOfPlayers < 9"
-      @click="startGame"
-      type="button"
-    >Start La Game!</button>
+    <MenuCard>
+      <h1>Le TimeBomB Des Potes !</h1>
+      <div v-if="!IsplayerInTheGame">
+        <input
+          class="card-input"
+          placeholder="Pseudo"
+          v-model="playerName"
+          type="text"
+          id="pseudo"
+          name="pseudo"
+          required
+          minlength="1"
+          maxlength="20"
+          size="12"
+        />
+        <FunkyButton class="button" @click="updateGame">Go !</FunkyButton>
+      </div>
+
+      <div>
+        <h3>Joueurs ayant rejoint la partie :</h3>
+        <p v-for="player in $store.state.game.playerList" :key="player.id">{{ player.name }}</p>
+      </div>
+      <FunkyButton
+        class="button"
+        @click="startGame"
+        v-if="numberOfPlayers > 1 && numberOfPlayers < 9"
+      >Go !</FunkyButton>
+    </MenuCard>
   </div>
 </template>
 
@@ -30,8 +35,15 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/services/firestore.js";
 import { drawGame, drawRoles } from "@/services/gameHelper.js";
+import MenuCard from "@/components/MenuCard.vue";
+import FunkyButton from "@/components/FunkyButton.vue";
+
 export default {
   name: "StartGame",
+  components: {
+    MenuCard,
+    FunkyButton
+  },
   data() {
     return {
       playerName: ""
@@ -87,7 +99,26 @@ export default {
 </script>
 
 <style scoped>
+.startGame {
+  text-align: center;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
 .startGame ul {
   margin: 0;
+  list-style-type: none;
+}
+
+.button {
+  padding-top: 5px;
+}
+
+.card-input {
+  padding: 10px;
+  width: calc(100% - 20px);
+  margin-bottom: 15px;
 }
 </style>

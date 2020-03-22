@@ -1,16 +1,35 @@
 <template>
   <div class="board">
-    <router-link class="link" to="/">
-      <h1>TimeBomB Des Copains</h1>
-    </router-link>
-    <TbDeck
-      v-for="player in players"
-      :key="player.id"
-      :cards="player.deck"
-      :playerName="player.name"
-      :playerId="player.id"
-    />
+    <div class="top">
+      <TbDeck
+        v-for="player in decks.topDecks"
+        :key="player.id"
+        :cards="player.deck"
+        :playerName="player.name"
+        :playerId="player.id"
+      />
+    </div>
+    <div class="left-right-container">
+      <div class="left">
+        <TbDeck
+          v-for="player in decks.leftDecks"
+          :key="player.id"
+          :cards="player.deck"
+          :playerName="player.name"
+          :playerId="player.id"
+        />
+      </div>
 
+      <div class="right">
+        <TbDeck
+          v-for="player in decks.rightDecks"
+          :key="player.id"
+          :cards="player.deck"
+          :playerName="player.name"
+          :playerId="player.id"
+        />
+      </div>
+    </div>
     <button
       class="redraw"
       @click="redrawGame"
@@ -19,24 +38,23 @@
     >Redraw</button>
     <span v-if="$store.getters.redWin">
       red wins ! c'était :
-      <span v-for="redPlayer in redPlayers" :key="redPlayer.id">
-        {{
-        redPlayer.name
-        }}
-      </span>
+      <span
+        v-for="redPlayer in redPlayers"
+        :key="redPlayer.id"
+      >{{redPlayer.name}}</span>
     </span>
     <span v-if="$store.getters.blueWin">
       blue wins ! c'était :
-      <span v-for="bluePlayer in bluePlayers" :key="bluePlayer.id">
-        {{
-        bluePlayer.name
-        }}
-      </span>
+      <span
+        v-for="bluePlayer in bluePlayers"
+        :key="bluePlayer.id"
+      >{{bluePlayer.name}}</span>
     </span>
     <TbTracker class="tracker" />
     <div class="my-deck">
+      <TbDeck :cards="myPlayer.deck" :playerId="myPlayer.id" />
       <TbDeck
-        :cards="myPlayer.deck"
+        :cards="mySortedDeck"
         :playerName="myPlayer.name"
         :playerId="myPlayer.id"
         :forceDisplay="true"
@@ -61,6 +79,39 @@ export default {
     TbTracker
   },
   computed: {
+    mySortedDeck() {
+      return [...this.myPlayer.deck].sort(function(a, b) {
+        if (a.type > b.type) {
+          return 1;
+        }
+        if (b.type > a.type) {
+          return -1;
+        }
+        return 0;
+      });
+    },
+    decks() {
+      const playerDecks = this.$store.getters.playerDecks.filter(
+        playerDeck => this.$store.state.playerId !== playerDeck.id
+      );
+      const sideMapping = {
+        4: 1,
+        5: 1,
+        6: 1,
+        7: 2,
+        8: 2
+      };
+      const side = sideMapping[this.$store.state.game.playerList.length];
+      const rightDecks = playerDecks.slice(0, side);
+      const leftDecks = playerDecks.slice(side, side * 2);
+      const topDecks = playerDecks.slice(side * 2);
+      return {
+        rightDecks,
+        leftDecks,
+        topDecks
+      };
+    },
+
     myPlayer() {
       return this.$store.getters.playerDecks.find(
         playerDeck => this.$store.state.playerId === playerDeck.id
@@ -115,16 +166,8 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap");
 
-.board h1 {
-  margin: 0;
-  background-color: rgb(34, 34, 34);
-  border: 5px solid #c0651b;
-  color: #c0651b;
-  display: flex;
-  font-family: "Spicy Rice", cursive;
-  font-size: 48px;
-  justify-content: center;
-  margin-bottom: 20px;
+.board {
+  height: 100%;
 }
 .link {
   text-decoration: none;
@@ -143,5 +186,29 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+.top {
+  padding-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.left {
+  margin-left: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.right {
+  margin-right: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.left-right-container {
+  margin-top: 50px;
+  height: 50%;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

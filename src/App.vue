@@ -17,9 +17,16 @@ body,
   padding: 0;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #276c2d;
+  background: url("assets/greyish.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1,
+h2,
+h3 {
+  font-family: "Knewave", cursive;
 }
 </style>
