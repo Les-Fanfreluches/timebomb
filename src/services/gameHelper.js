@@ -36,6 +36,7 @@ function drawGame(
 
   return {
     turn: currentTurn + 1,
+    previousPlayerId: null,
     decks: playerDecks,
     tracker: {
       grey: numberOfGreysTurned,

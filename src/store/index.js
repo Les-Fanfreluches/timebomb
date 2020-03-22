@@ -101,6 +101,7 @@ export default new Vuex.Store({
   game: {
     turn: 1,
     currentPlayerId: "toto1",
+    previousPlayerId : "toto2",
     playerList: [
       { id: "toto1", name: "toto1" },
       { id: "toto2", name: "toto2" }

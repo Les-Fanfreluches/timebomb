@@ -16,21 +16,24 @@
       @click="redrawGame"
       v-if="$store.getters.shouldRedraw"
       type="button"
-    >
-      Redraw
-    </button>
+    >Redraw</button>
     <span v-if="$store.getters.redWin">
       red wins ! c'était :
-      <span v-for="redPlayer in redPlayers" :key="redPlayer.id">{{
+      <span v-for="redPlayer in redPlayers" :key="redPlayer.id">
+        {{
         redPlayer.name
-      }}</span>
+        }}
+      </span>
     </span>
     <span v-if="$store.getters.blueWin">
       blue wins ! c'était :
-      <span v-for="bluePlayer in bluePlayers" :key="bluePlayer.id">{{
+      <span v-for="bluePlayer in bluePlayers" :key="bluePlayer.id">
+        {{
         bluePlayer.name
-      }}</span>
+        }}
+      </span>
     </span>
+    <TbTracker class="tracker" />
     <div class="my-deck">
       <TbDeck
         :cards="myPlayer.deck"
@@ -47,13 +50,15 @@
 // @ is an alias to /src
 
 import TbDeck from "@/components/TbDeck.vue";
+import TbTracker from "@/components/TbTracker.vue";
 import { db } from "@/services/firestore.js";
 import { drawGame } from "@/services/gameHelper.js";
 
 export default {
   name: "TbBoard",
   components: {
-    TbDeck
+    TbDeck,
+    TbTracker
   },
   computed: {
     myPlayer() {
@@ -123,6 +128,12 @@ export default {
 }
 .link {
   text-decoration: none;
+}
+
+.tracker {
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
 .my-deck {

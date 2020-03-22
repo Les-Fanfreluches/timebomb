@@ -26,8 +26,7 @@ export default {
   },
   props: {
     cardIndex: {
-      type: Number,
-      required: true
+      type: Number
     },
     cardType: {
       validator: function(value) {

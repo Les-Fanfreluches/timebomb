@@ -51,16 +51,30 @@ export default {
   },
   methods: {
     turnCard(cardIndex) {
-      const currentPlayerId = this.$store.state.playerId;
+      const myPlayerId = this.$store.state.playerId;
+      const previousPlayerId = this.$store.state.game.previousPlayerId;
 
+      // empêche de cliquer sur son propre deck
+      if (this.playerId === myPlayerId) {
+        return;
+      }
+
+      // empêche de cliquer sur le previous player
+      if (this.playerId === previousPlayerId) {
+        return;
+      }
+
+      // empêche de cliquer lorsque la game est finie
       if (this.$store.getters.isGameFinished) {
         return;
       }
 
-      if (!this.$store.getters.isPlayerTurnToPlay(currentPlayerId)) {
+      // empêche de cliquer si ce n'est pas au joueur de jouer
+      if (!this.$store.getters.isPlayerTurnToPlay(myPlayerId)) {
         return;
       }
 
+      // empêche de cliquer si le round est fini
       if (this.$store.getters.shouldRedraw) {
         return;
       }
@@ -72,6 +86,7 @@ export default {
         this.$store.state.game.decks[deckPlayerId],
         cardIndex
       );
+
       const turnedCardColor = newDeck[cardIndex].type;
       let greyTracker = this.$store.state.game.tracker.grey;
       let bombTracker = this.$store.state.game.tracker.bomb;
@@ -86,6 +101,7 @@ export default {
       game.update({
         [deckKey]: newDeck,
         currentPlayerId: deckPlayerId,
+        previousPlayerId: myPlayerId,
         "tracker.grey": greyTracker,
         "tracker.bomb": bombTracker,
         "tracker.bigben": bigbenTracker
