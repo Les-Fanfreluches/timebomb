@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
 .card-container {
   width: 400px;
   background-color: #fff8f0;

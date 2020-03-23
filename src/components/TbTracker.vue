@@ -21,7 +21,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .tracker-container {
   display: inline-block;
   position: relative;

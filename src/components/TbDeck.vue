@@ -5,7 +5,7 @@
         v-for="(card, index) in cards"
         :key="`${$store.state.game.turn}-${index}`"
         :cardType="card.type"
-        :turned="card.turned || forceDisplay"
+        :turned="card.turned"
         @turnCard="turnCard"
         :cardIndex="index"
       />
@@ -44,9 +44,6 @@ export default {
     playerId: {
       type: String,
       required: true
-    },
-    forceDisplay: {
-      type: Boolean
     }
   },
   methods: {
@@ -111,12 +108,7 @@ export default {
 };
 </script>
 
-<style>
-.TbCards {
-  background-color: aquamarine;
-  border: 3px solid rgb(124, 108, 17);
-  min-height: 100px;
-}
+<style scoped>
 .TbDeck {
   text-align: center;
   width: 400px;

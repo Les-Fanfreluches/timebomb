@@ -20,7 +20,7 @@ body,
   font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url("assets/greyish.jpg");
+  background: url("assets/whitish.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }

@@ -1,7 +1,5 @@
 <template>
-  <div class="TbPlayer" :class="{ currentPlayer: isPlaying }">
-    {{ playerName }}
-  </div>
+  <div class="TbPlayer" :class="{ currentPlayer: isPlaying }">{{ playerName }}</div>
 </template>
 
 <script>
@@ -22,10 +20,11 @@ export default {
 
 <style>
 .TbPlayer {
-  border: 2px solid black;
+  font-family: "Knewave", cursive;
+  font-size: 24px;
 }
 
 .currentPlayer {
-  background-color: white;
+  color: rgb(2, 92, 2);
 }
 </style>

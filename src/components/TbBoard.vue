@@ -19,7 +19,6 @@
           :playerId="player.id"
         />
       </div>
-
       <div class="right">
         <TbDeck
           v-for="player in decks.rightDecks"
@@ -53,13 +52,10 @@
     <TbTracker class="tracker" />
     <div class="my-deck">
       <TbDeck :cards="myPlayer.deck" :playerId="myPlayer.id" />
-      <TbDeck
-        :cards="mySortedDeck"
-        :playerName="myPlayer.name"
-        :playerId="myPlayer.id"
-        :forceDisplay="true"
-      />
-      <span>{{ playerRole }}</span>
+      <div class="my-displayed-deck">
+        <TbHandDisplay :cards="mySortedDeck" />
+        <RoleDisplay />
+      </div>
     </div>
   </div>
 </template>
@@ -69,6 +65,8 @@
 
 import TbDeck from "@/components/TbDeck.vue";
 import TbTracker from "@/components/TbTracker.vue";
+import TbHandDisplay from "@/components/TbHandDisplay.vue";
+import RoleDisplay from "@/components/RoleDisplay.vue";
 import { db } from "@/services/firestore.js";
 import { drawGame } from "@/services/gameHelper.js";
 
@@ -76,7 +74,9 @@ export default {
   name: "TbBoard",
   components: {
     TbDeck,
-    TbTracker
+    TbTracker,
+    TbHandDisplay,
+    RoleDisplay
   },
   computed: {
     mySortedDeck() {
@@ -94,17 +94,21 @@ export default {
       const playerDecks = this.$store.getters.playerDecks.filter(
         playerDeck => this.$store.state.playerId !== playerDeck.id
       );
-      const sideMapping = {
+      /*const sideMapping = {
+        2: 0,
         4: 1,
         5: 1,
         6: 1,
         7: 2,
         8: 2
-      };
-      const side = sideMapping[this.$store.state.game.playerList.length];
-      const rightDecks = playerDecks.slice(0, side);
-      const leftDecks = playerDecks.slice(side, side * 2);
-      const topDecks = playerDecks.slice(side * 2);
+      };*/
+      //const side = sideMapping[this.$store.state.game.playerList.length];
+      //const rightDecks = playerDecks.slice(0, side);
+      //const leftDecks = playerDecks.slice(side, side * 2);
+      //const topDecks = playerDecks.slice(side * 2);
+      const rightDecks = new Array(2).fill(playerDecks[0]);
+      const leftDecks = new Array(2).fill(playerDecks[0]);
+      const topDecks = new Array(3).fill(playerDecks[0]);
       return {
         rightDecks,
         leftDecks,
@@ -124,11 +128,6 @@ export default {
       return this.$store.state.game.playerList.find(
         player => player.id === this.$store.state.playerId
       ).name;
-    },
-    playerRole() {
-      return this.$store.state.game.playerList.find(
-        player => player.id === this.$store.state.playerId
-      ).role;
     },
     redPlayers() {
       return this.$store.state.game.playerList.filter(
@@ -168,6 +167,7 @@ export default {
 
 .board {
   height: 100%;
+  cursor: url("../assets/cursor.png"), auto;
 }
 .link {
   text-decoration: none;
@@ -188,26 +188,35 @@ export default {
   justify-content: center;
   flex-direction: column;
 }
+
+.my-displayed-deck {
+  display: flex;
+  width: 310px;
+  justify-content: space-between;
+}
+
 .top {
+  margin-left: 10%;
   padding-top: 50px;
   display: flex;
   justify-content: space-evenly;
+  max-width: 80%;
 }
 .left {
   margin-left: 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .right {
   margin-right: 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .left-right-container {
   margin-top: 50px;
-  height: 50%;
+  height: 350px;
   display: flex;
   justify-content: space-between;
 }

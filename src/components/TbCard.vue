@@ -48,25 +48,24 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card {
   margin: 5px;
-  width: 50px;
-  height: 90px;
-  border-radius: 7px;
-  border: 2px solid white;
+  width: 60px;
+  height: 112px;
   display: inline-block;
+  background-size: cover;
 }
 .brown-card {
-  background-color: #803e29;
+  background-image: url("../assets/backCard.png");
 }
 .grey-card {
-  background-color: #707070;
+  background-image: url("../assets/greyBomb.png");
 }
 .gold-card {
-  background-color: #d4af0b;
+  background-image: url("../assets/bomb.png");
 }
 .red-card {
-  background-color: #bf0202;
+  background-image: url("../assets/bigBen.png");
 }
 </style>
