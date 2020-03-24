@@ -1,5 +1,5 @@
 <template>
-  <div class="TbDeck">
+  <div class="TbDeck" :class="{previousPlayer: playerId === $store.state.game.previousPlayerId}">
     <div class="TbCards">
       <TbCard
         v-for="(card, index) in cards"
@@ -112,5 +112,8 @@ export default {
 .TbDeck {
   text-align: center;
   width: 400px;
+}
+.previousPlayer {
+  opacity: 0.5;
 }
 </style>

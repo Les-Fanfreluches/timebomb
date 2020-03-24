@@ -29,27 +29,8 @@
         />
       </div>
     </div>
-    <button
-      class="redraw"
-      @click="redrawGame"
-      v-if="$store.getters.shouldRedraw"
-      type="button"
-    >Redraw</button>
-    <span v-if="$store.getters.redWin">
-      red wins ! c'était :
-      <span
-        v-for="redPlayer in redPlayers"
-        :key="redPlayer.id"
-      >{{redPlayer.name}}</span>
-    </span>
-    <span v-if="$store.getters.blueWin">
-      blue wins ! c'était :
-      <span
-        v-for="bluePlayer in bluePlayers"
-        :key="bluePlayer.id"
-      >{{bluePlayer.name}}</span>
-    </span>
-    <TbTracker class="tracker" />
+    <RedWin v-if="$store.getters.redWin" />
+    <BlueWin v-if="$store.getters.blueWin" />
     <div class="my-deck">
       <TbDeck :cards="myPlayer.deck" :playerId="myPlayer.id" />
       <div class="my-displayed-deck">
@@ -57,16 +38,23 @@
         <RoleDisplay />
       </div>
     </div>
+    <div class="redraw-tracker-container">
+      <TbTracker class="tracker" />
+      <FunkyButton @click="redrawGame" v-if="$store.getters.shouldRedraw">Go !</FunkyButton>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
+import RedWin from "@/components/RedWin.vue";
+import BlueWin from "@/components/BlueWin.vue";
 import TbDeck from "@/components/TbDeck.vue";
 import TbTracker from "@/components/TbTracker.vue";
 import TbHandDisplay from "@/components/TbHandDisplay.vue";
 import RoleDisplay from "@/components/RoleDisplay.vue";
+import FunkyButton from "@/components/FunkyButton.vue";
 import { db } from "@/services/firestore.js";
 import { drawGame } from "@/services/gameHelper.js";
 
@@ -76,7 +64,10 @@ export default {
     TbDeck,
     TbTracker,
     TbHandDisplay,
-    RoleDisplay
+    RoleDisplay,
+    FunkyButton,
+    RedWin,
+    BlueWin
   },
   computed: {
     mySortedDeck() {
@@ -94,21 +85,19 @@ export default {
       const playerDecks = this.$store.getters.playerDecks.filter(
         playerDeck => this.$store.state.playerId !== playerDeck.id
       );
-      /*const sideMapping = {
+      const sideMapping = {
         2: 0,
         4: 1,
         5: 1,
         6: 1,
         7: 2,
         8: 2
-      };*/
-      //const side = sideMapping[this.$store.state.game.playerList.length];
-      //const rightDecks = playerDecks.slice(0, side);
-      //const leftDecks = playerDecks.slice(side, side * 2);
-      //const topDecks = playerDecks.slice(side * 2);
-      const rightDecks = new Array(2).fill(playerDecks[0]);
-      const leftDecks = new Array(2).fill(playerDecks[0]);
-      const topDecks = new Array(3).fill(playerDecks[0]);
+      };
+      const side = sideMapping[this.$store.state.game.playerList.length];
+      const rightDecks = playerDecks.slice(0, side);
+      const leftDecks = playerDecks.slice(side, side * 2);
+      const topDecks = playerDecks.slice(side * 2);
+
       return {
         rightDecks,
         leftDecks,
@@ -128,16 +117,6 @@ export default {
       return this.$store.state.game.playerList.find(
         player => player.id === this.$store.state.playerId
       ).name;
-    },
-    redPlayers() {
-      return this.$store.state.game.playerList.filter(
-        player => player.role === "red"
-      );
-    },
-    bluePlayers() {
-      return this.$store.state.game.playerList.filter(
-        player => player.role === "blue"
-      );
     }
   },
   methods: {
@@ -167,16 +146,19 @@ export default {
 
 .board {
   height: 100%;
-  cursor: url("../assets/cursor.png"), auto;
 }
 .link {
   text-decoration: none;
 }
 
 .tracker {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  margin-bottom: 50px;
+}
+
+.redraw-tracker-container {
+  position: absolute;
+  top: calc(50% - 140px);
+  left: calc(50% - 74px);
 }
 
 .my-deck {
